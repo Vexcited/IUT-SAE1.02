@@ -5,6 +5,7 @@ from utils.input import demanderEntier
 from utils.centrer import centrer
 from scores.entrée import EntréeScore
 from scores.fichier import écrireScore
+from random import randint
 
 def afficher_allumettes(nb_allumettes : int) -> None:
     """
@@ -53,7 +54,10 @@ def dérouler_tour(joueur: str, nb_tour: int, nb_allumettes: int) -> int:
     afficher_tour(nb_tour)
     afficher_allumettes(nb_allumettes)
 
-    choix_allumettes = demanderEntier(joueur + " : Combien d'allumettes prenez-vous ? (1, 2 ou 3) : ")
+    if joueur == "robot":
+        choix_allumettes = randint(1, 3)
+    else:
+        choix_allumettes = demanderEntier(joueur + " : Combien d'allumettes prenez-vous ? (1, 2 ou 3) : ")
 
     # Lorsque l'on prend les allumettes qui restent,
     # on perd la partie.
