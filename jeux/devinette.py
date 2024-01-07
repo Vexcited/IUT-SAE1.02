@@ -5,6 +5,7 @@ from scores.fichier import écrireScore
 from utils.effacer_ecran import effacer_ecran
 from utils.couleurs import gris_foncé_re, jaune_re, rouge_clair_re
 from utils.titre import centrer_couleur, séparateur_avec_titre
+from random import randint
 
 def calcul_points(nombre_tour : int) -> int:
     """
@@ -51,10 +52,13 @@ def main_devinette(joueur1: str, joueur2: str) -> None:
 
     # On demande au joueur 1 de sélectionner le nombre mystère
     # que le joueur 2 devra trouver entre 1 et 100
-    nombre_mystère = demanderEntier(jaune_re(joueur1) + ", choisissez le nombre mystère (entre 1 et 100) que " + joueur2 + " devra trouver : " + gris_foncé_re("(caché) "), True)
+    if joueur1 == "robot":
+        nombre_mystère = randint(1, 100)
+    else:
+        nombre_mystère = demanderEntier(jaune_re(joueur1) + ", choisissez le nombre mystère (entre 1 et 100) que " + joueur2 + " devra trouver : " + gris_foncé_re("(caché) "), True)
 
-    while not (1 <= nombre_mystère <= 100):
-        nombre_mystère = demanderEntier(jaune_re(joueur1) + ", le nombre mystère doit être entre 1 et 100, réessayez : " + gris_foncé_re("(caché) "), True)
+        while not (1 <= nombre_mystère <= 100):
+            nombre_mystère = demanderEntier(jaune_re(joueur1) + ", le nombre mystère doit être entre 1 et 100, réessayez : " + gris_foncé_re("(caché) "), True)
 
     while jeu_en_cours:
         nombre_tour += 1
@@ -62,15 +66,30 @@ def main_devinette(joueur1: str, joueur2: str) -> None:
         effacer_ecran()
         afficher_tour(nombre_tour)
 
-        # Proposition
-        proposition = demanderEntier("\n" + rouge_clair_re(joueur2) + ", veuillez choisir un nombre entre " + str(min) + " et " + str(max) + " : ")
-        # Si on donne une proposition en dehors des limites, on redemande une proposition.
-        while not (proposition <= max and proposition >= min):
-            proposition = demanderEntier("\n" + rouge_clair_re(joueur2) + ", votre proposition doit être entre " + str(min) + " et " + str(max) + " : ")
+        if joueur2 == "robot":
+            proposition = randint(min, max)
+            print(rouge_clair_re(joueur2) + ", propose " + str(proposition) + " !")
+        else:
+            # Proposition
+            proposition = demanderEntier("\n" + rouge_clair_re(joueur2) + ", veuillez choisir un nombre entre " + str(min) + " et " + str(max) + " : ")
+            # Si on donne une proposition en dehors des limites, on redemande une proposition.
+            while not (proposition <= max and proposition >= min):
+                proposition = demanderEntier("\n" + rouge_clair_re(joueur2) + ", votre proposition doit être entre " + str(min) + " et " + str(max) + " : ")
         
-        while réponse != "trop petit" and réponse != "trop grand" and réponse != "c'est gagné":
-            # On utilise .strip pour enlever les espaces avant et après la réponse.
-            réponse = input("\n" + jaune_re(joueur1) + ", votre réponse (répondez par 'trop petit', 'trop grand' ou 'c'est gagné') : ").strip().lower()
+        if joueur1 == "robot":
+            if proposition < nombre_mystère:
+                print(jaune_re(joueur1) + ", trop petit !")
+                réponse = "trop petit"
+            elif proposition > nombre_mystère:
+                print(jaune_re(joueur1) + ", trop grand !")
+                réponse = "trop grand"
+            else:
+                print(jaune_re(joueur1) + ", c'est gagné !")
+                réponse = "c'est gagné"
+        else:
+            while réponse != "trop petit" and réponse != "trop grand" and réponse != "c'est gagné":
+                # On utilise .strip pour enlever les espaces avant et après la réponse.
+                réponse = input("\n" + jaune_re(joueur1) + ", votre réponse (répondez par 'trop petit', 'trop grand' ou 'c'est gagné') : ").strip().lower()
         
         # ANTI-CHEAT
         if réponse == "trop petit" and not proposition < nombre_mystère :
@@ -94,6 +113,8 @@ def main_devinette(joueur1: str, joueur2: str) -> None:
                 jeu_en_cours = False
         
         réponse = ""
+
+        input("Appuyez sur une touche pour continuer...")
 
     if not triche:
         # On remplie le score.

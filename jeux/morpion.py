@@ -5,6 +5,7 @@ from utils.couleurs import gris_foncé_re, jaune_re, rouge_clair_re, couleur_jou
 from utils.titre import centrer_couleur, séparateur_avec_titre
 from scores.entrée import EntréeScore
 from scores.fichier import écrireScore
+from random import choice
 
 def afficher_morpion(morpion : list[list[str]]) -> None:
     """
@@ -83,6 +84,8 @@ def main_morpion(joueur1: str, joueur2: str) -> None:
     ligne_index : int
     case_index  : int
 
+    case_dispo : list[int]
+
     jeu_en_cours = True
     égalité      = False
     # On commence réellement au tour 1.
@@ -94,6 +97,8 @@ def main_morpion(joueur1: str, joueur2: str) -> None:
                 ["6","7","8"]]
     score = EntréeScore()
     score.type_jeu = "morpion"
+
+    case_dispo = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
     # Au début du jeu, on est au tour 1.
     joueur_actuel     = joueur1
@@ -114,7 +119,12 @@ def main_morpion(joueur1: str, joueur2: str) -> None:
         afficher_tour(nb_tour)
         afficher_morpion(morpion)
 
-        choix = demanderEntier(couleur_joueur(joueur_actuel, joueur1, joueur2) + ", veuillez choisir une case : ")
+        if joueur_actuel == "robot":
+            choix = choice(case_dispo)
+
+            print(couleur_joueur(joueur_actuel, joueur1, joueur2), ", a choisi la case", choix, "!")
+        else:
+            choix = demanderEntier(couleur_joueur(joueur_actuel, joueur1, joueur2) + ", veuillez choisir une case : ")
 
         # Si la case n'est pas dans la grille, on redemande.
         while choix < 0 or choix > 8:
@@ -123,6 +133,8 @@ def main_morpion(joueur1: str, joueur2: str) -> None:
         # Si la case choisie est déjà remplie, on redemande.
         while estRemplie(morpion[choix // 3][choix % 3]):
             choix = demanderEntier(couleur_joueur(joueur_actuel, joueur1, joueur2) + ", veuillez choisir une case non vide : ")
+
+        case_dispo.remove(int(morpion[choix // 3][choix % 3]))
 
         if joueur_actuel == joueur1:
             morpion[choix // 3][choix % 3] = "O"
@@ -159,6 +171,8 @@ def main_morpion(joueur1: str, joueur2: str) -> None:
             for ligne_index in range(3):
                 if morpion[0][ligne_index] == morpion[1][ligne_index] and morpion[0][ligne_index] == morpion[2][ligne_index] and estRemplie(morpion[0][ligne_index]):
                     jeu_en_cours = False
+
+        input("Appuyez sur une touche pour continuer...")
 
     # On affiche la nouvelle grille avant d'afficher le résultat.
     effacer_ecran()

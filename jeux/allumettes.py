@@ -54,8 +54,16 @@ def dérouler_tour(joueur: str, nb_tour: int, nb_allumettes: int) -> int:
     afficher_tour(nb_tour)
     afficher_allumettes(nb_allumettes)
 
+    # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
     if joueur == "robot":
-        choix_allumettes = randint(1, 3)
+        if nb_allumettes > 3 :
+            choix_allumettes = randint(1, 3)
+        elif nb_allumettes > 1 :
+            choix_allumettes = nb_allumettes - 1
+        else:
+            choix_allumettes = 1
+        
+        print(joueur, "prends", choix_allumettes, "allumettes !")
     else:
         choix_allumettes = demanderEntier(joueur + " : Combien d'allumettes prenez-vous ? (1, 2 ou 3) : ")
 
@@ -68,7 +76,9 @@ def dérouler_tour(joueur: str, nb_tour: int, nb_allumettes: int) -> int:
     # On vérifie que le joueur a bien entré un nombre d'allumettes valide.
     while choix_allumettes not in [1, 2, 3]:
         choix_allumettes = demanderEntier(joueur + " : Le nombre d'allumettes à retirer du jeu doit être 1, 2 ou 3 ! : ")
-
+        
+    input("Appuyez sur une touche pour continuer...")
+    
     # On retourne le nombre d'allumettes restantes.
     return nb_allumettes - choix_allumettes
 

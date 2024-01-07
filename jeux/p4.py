@@ -5,6 +5,7 @@ from utils.effacer_ecran import effacer_ecran
 from utils.couleurs import réinitialisation_couleur, jaune, rouge_clair, couleur_joueur, gris_foncé_re
 from scores.entrée import EntréeScore
 from scores.fichier import écrireScore
+from random import choice
 
 def calcul_points(nombre_tour : int) -> int:
     """
@@ -83,11 +84,16 @@ def dérouler_tour(joueur_actuel: str, joueur1: str, jeu: list[list[str]], colon
     else:
         couleur = rouge_clair("")
 
-    # On demande au joueur de choisir une colonne.
-    choix = demanderEntier(réinitialisation_couleur(couleur + joueur_actuel) + ", choisissez une colonne : ")
+    if joueur_actuel == "robot":
+        choix = choice(colonne_restantes)
 
-    while choix not in colonne_restantes :
-        choix = demanderEntier(réinitialisation_couleur(couleur + joueur_actuel) + ", choisissez une colonne encore disponible : ")
+        print(réinitialisation_couleur(couleur + joueur_actuel), "a choisi la colonne", choix, "!")
+    else:
+        # On demande au joueur de choisir une colonne.
+        choix = demanderEntier(réinitialisation_couleur(couleur + joueur_actuel) + ", choisissez une colonne : ")
+
+        while choix not in colonne_restantes :
+            choix = demanderEntier(réinitialisation_couleur(couleur + joueur_actuel) + ", choisissez une colonne encore disponible : ")
 
     # Test pour savoir a quel endroit de la colonne choisie le pion dois se mettre
     if jeu[5][choix-1] == '.':
@@ -128,6 +134,7 @@ def dérouler_tour(joueur_actuel: str, joueur1: str, jeu: list[list[str]], colon
             if jeu[index_ligne+3][index_case] == jeu[index_ligne+2][index_case+1] and jeu[index_ligne+1][index_case+2] == jeu[index_ligne][index_case+3] and jeu[index_ligne+3][index_case] == jeu[index_ligne][index_case+3] and jeu[index_ligne+3][index_case] != ".":
                 return 1
     
+    input("Appuyez sur une touche pour continuer...")
     # Personne a gagné, on continue la partie.
     return 0
 
