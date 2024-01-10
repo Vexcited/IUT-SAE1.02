@@ -82,6 +82,7 @@ def main_morpion(joueur1: str, joueur2: str) -> None:
     adversaire_actuel : str
     # Variables utilisés dans les boucles.
     ligne_index : int
+    colonne_index : int
     case_index  : int
 
     case_dispo : list[int]
@@ -119,8 +120,45 @@ def main_morpion(joueur1: str, joueur2: str) -> None:
         afficher_tour(nb_tour)
         afficher_morpion(morpion)
 
-        if joueur_actuel == "robot":
+        if joueur_actuel == "robot" or joueur_actuel == "robot2":
             choix = choice(case_dispo)
+
+            # choix pour les colonnes  
+            for colonne_index in range(0,3):
+                if morpion[colonne_index][0] == morpion[colonne_index][1]:
+                    choix = 2 + 3 * colonne_index
+                elif morpion[colonne_index][1] == morpion[colonne_index][2]:
+                    choix = 0 + 3 * colonne_index
+                elif morpion[colonne_index][0] == morpion[colonne_index][2]:
+                    choix = 1 + 3 * colonne_index
+
+            # choix pour les lignes 
+            for ligne_index in range(0,3):
+                if morpion[0][ligne_index] == morpion[1][ligne_index]:
+                    choix = 6 + ligne_index
+                elif morpion[1][ligne_index] == morpion[2][ligne_index]:
+                    choix = 0 + ligne_index
+                elif morpion[0][ligne_index] == morpion[2][ligne_index]:
+                    choix = 3 + ligne_index
+
+            # choix pour les diagonales 
+            if morpion[0][0] == morpion[1][1]:
+                choix = 8
+            if morpion[1][1] == morpion[2][2]:
+                choix = 0
+            if morpion[2][2] == morpion[0][0]:
+                choix = 4
+
+            if morpion[0][2] == morpion[1][1]:
+                choix = 6
+            if morpion[2][0] == morpion[1][1]:
+                choix = 2
+            if morpion[2][0] == morpion[0][2]:
+                choix = 4
+
+            # Test pour pas que le robot choisi une case déjà prise
+            if choix not in case_dispo:
+                choix = choice(case_dispo)
 
             print(couleur_joueur(joueur_actuel, joueur1, joueur2), ", a choisi la case", choix, "!")
         else:
@@ -135,42 +173,44 @@ def main_morpion(joueur1: str, joueur2: str) -> None:
             choix = demanderEntier(couleur_joueur(joueur_actuel, joueur1, joueur2) + ", veuillez choisir une case non vide : ")
 
         case_dispo.remove(int(morpion[choix // 3][choix % 3]))
+        print(case_dispo)
 
         if joueur_actuel == joueur1:
             morpion[choix // 3][choix % 3] = "O"
         elif joueur_actuel == joueur2:
             morpion[choix // 3][choix % 3] = "X"
 
+        # On vérifie la diagonale de haut-gauche à bas-droite.
+        if morpion[0][0] == morpion[1][1] and morpion[0][0] == morpion[2][2] and estRemplie(morpion[0][0]):
+            jeu_en_cours = False
+
+        # On vérifie la diagonale de haut-droite à bas-gauche.
+        if morpion[0][2] == morpion[1][1] and morpion[0][2] == morpion[2][0] and estRemplie(morpion[0][2]):
+            jeu_en_cours = False
+
+        # On vérifie les lignes.
+        for ligne_index in range(3):
+            if morpion[ligne_index][0] == morpion[ligne_index][1] and morpion[ligne_index][0] == morpion[ligne_index][2] and estRemplie(morpion[ligne_index][0]):
+                jeu_en_cours = False
+
+        # On vérifie les colonnes.
+        for ligne_index in range(3):
+            if morpion[0][ligne_index] == morpion[1][ligne_index] and morpion[0][ligne_index] == morpion[2][ligne_index] and estRemplie(morpion[0][ligne_index]):
+                jeu_en_cours = False
+
         # On vérifie l'égalité.
         # Pour faire cela, on itère tout les éléments
         # et si un élément n'est pas rempli, on est sûr de ne
         # pas avoir d'égalité.
-        égalité = True
-        for ligne_index in range(3):
-            for case_index in range(3):
-                if (not estRemplie(morpion[ligne_index][case_index])):
-                    égalité = False
-        
-        if (égalité):
-            jeu_en_cours = False
-        else:
-            # On vérifie la diagonale de haut-gauche à bas-droite.
-            if morpion[0][0] == morpion[1][1] and morpion[0][0] == morpion[2][2] and estRemplie(morpion[0][0]):
-                jeu_en_cours = False
-
-            # On vérifie la diagonale de haut-droite à bas-gauche.
-            if morpion[0][2] == morpion[1][1] and morpion[0][2] == morpion[2][0] and estRemplie(morpion[0][2]):
-                jeu_en_cours = False
-
-            # On vérifie les lignes.
+        if (jeu_en_cours):
+            égalité = True
             for ligne_index in range(3):
-                if morpion[ligne_index][0] == morpion[ligne_index][1] and morpion[ligne_index][0] == morpion[ligne_index][2] and estRemplie(morpion[ligne_index][0]):
-                    jeu_en_cours = False
+                for case_index in range(3):
+                    if (not estRemplie(morpion[ligne_index][case_index])):
+                        égalité = False
 
-            # On vérifie les colonnes.
-            for ligne_index in range(3):
-                if morpion[0][ligne_index] == morpion[1][ligne_index] and morpion[0][ligne_index] == morpion[2][ligne_index] and estRemplie(morpion[0][ligne_index]):
-                    jeu_en_cours = False
+            if (égalité):
+                jeu_en_cours = False
 
         input("Appuyez sur une touche pour continuer...")
 
