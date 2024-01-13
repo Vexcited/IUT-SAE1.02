@@ -55,9 +55,12 @@ def dérouler_tour(joueur: str, nb_tour: int, nb_allumettes: int) -> int:
     afficher_allumettes(nb_allumettes)
 
     # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
+    # sinon le joueur joue
     if joueur == "robot":
-        if nb_allumettes > 3 :
+        if nb_allumettes > 8 :
             choix_allumettes = randint(1, 3)
+        elif nb_allumettes > 5 :
+            choix_allumettes = nb_allumettes - 5
         elif nb_allumettes > 1 :
             choix_allumettes = nb_allumettes - 1
         else:
