@@ -84,8 +84,11 @@ def main_morpion(joueur1: str, joueur2: str) -> None:
     ligne_index : int
     colonne_index : int
     case_index  : int
+    i : int
 
+    # variables utilisées pour les robots
     case_dispo : list[int]
+    choix_possible : list[int]
 
     jeu_en_cours = True
     égalité      = False
@@ -121,43 +124,56 @@ def main_morpion(joueur1: str, joueur2: str) -> None:
         afficher_morpion(morpion)
 
         if joueur_actuel == "robot" or joueur_actuel == "robot2":
+            choix_possible = []
+
             choix = choice(case_dispo)
 
+            # Le robot regarde toute les possibilité de gagné ou de ne pas perdre
             # choix pour les colonnes  
             for colonne_index in range(0,3):
                 if morpion[colonne_index][0] == morpion[colonne_index][1]:
-                    choix = 2 + 3 * colonne_index
-                elif morpion[colonne_index][1] == morpion[colonne_index][2]:
-                    choix = 0 + 3 * colonne_index
-                elif morpion[colonne_index][0] == morpion[colonne_index][2]:
-                    choix = 1 + 3 * colonne_index
+                    choix_possible.append(2 + 3 * colonne_index)
+                if morpion[colonne_index][1] == morpion[colonne_index][2]:
+                    choix_possible.append(0 + 3 * colonne_index)
+                if morpion[colonne_index][0] == morpion[colonne_index][2]:
+                    choix_possible.append(1 + 3 * colonne_index)
 
             # choix pour les lignes 
             for ligne_index in range(0,3):
                 if morpion[0][ligne_index] == morpion[1][ligne_index]:
-                    choix = 6 + ligne_index
-                elif morpion[1][ligne_index] == morpion[2][ligne_index]:
-                    choix = 0 + ligne_index
-                elif morpion[0][ligne_index] == morpion[2][ligne_index]:
-                    choix = 3 + ligne_index
+                    choix_possible.append(6 + ligne_index)
+                if morpion[1][ligne_index] == morpion[2][ligne_index]:
+                    choix_possible.append(0 + ligne_index)
+                if morpion[0][ligne_index] == morpion[2][ligne_index]:
+                    choix_possible.append(3 + ligne_index)
 
             # choix pour les diagonales 
             if morpion[0][0] == morpion[1][1]:
-                choix = 8
+                choix_possible.append(8)
             if morpion[1][1] == morpion[2][2]:
-                choix = 0
+                choix_possible.append(0)
             if morpion[2][2] == morpion[0][0]:
-                choix = 4
+                choix_possible.append(4)
 
             if morpion[0][2] == morpion[1][1]:
-                choix = 6
+                choix_possible.append(6)
             if morpion[2][0] == morpion[1][1]:
-                choix = 2
+                choix_possible.append(2)
             if morpion[2][0] == morpion[0][2]:
-                choix = 4
+                choix_possible.append(4)
+
+            # Le robot élimine les cases déjà prises
+            i = 0
+            while i < len(choix_possible):
+                if choix_possible[i] not in case_dispo:
+                    choix_possible.pop(i)
+                else:
+                    i += 1
 
             # Test pour pas que le robot choisi une case déjà prise
-            if choix not in case_dispo:
+            if choix_possible != []:
+                choix = choice(choix_possible)
+            else:
                 choix = choice(case_dispo)
 
             print(couleur_joueur(joueur_actuel, joueur1, joueur2), ", a choisi la case", choix, "!")
@@ -173,7 +189,6 @@ def main_morpion(joueur1: str, joueur2: str) -> None:
             choix = demanderEntier(couleur_joueur(joueur_actuel, joueur1, joueur2) + ", veuillez choisir une case non vide : ")
 
         case_dispo.remove(int(morpion[choix // 3][choix % 3]))
-        print(case_dispo)
 
         if joueur_actuel == joueur1:
             morpion[choix // 3][choix % 3] = "O"
