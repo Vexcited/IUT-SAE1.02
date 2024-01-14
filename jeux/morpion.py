@@ -123,6 +123,8 @@ def main_morpion(joueur1: str, joueur2: str) -> None:
         afficher_tour(nb_tour)
         afficher_morpion(morpion)
 
+        # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
+        # sinon le joueur joue
         if joueur_actuel == "robot" or joueur_actuel == "robot2":
             choix_possible = []
 

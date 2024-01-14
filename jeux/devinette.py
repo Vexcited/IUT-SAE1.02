@@ -66,6 +66,8 @@ def main_devinette(joueur1: str, joueur2: str) -> None:
         effacer_ecran()
         afficher_tour(nombre_tour)
 
+        # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
+        # sinon le joueur joue
         if joueur2 == "robot":
             proposition = randint(min, max)
             print(rouge_clair_re(joueur2) + ", propose " + str(proposition) + " !")
@@ -76,6 +78,8 @@ def main_devinette(joueur1: str, joueur2: str) -> None:
             while not (proposition <= max and proposition >= min):
                 proposition = demanderEntier("\n" + rouge_clair_re(joueur2) + ", votre proposition doit être entre " + str(min) + " et " + str(max) + " : ")
         
+        # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
+        # sinon le joueur joue
         if joueur1 == "robot":
             if proposition < nombre_mystère:
                 print(jaune_re(joueur1) + ", trop petit !")
