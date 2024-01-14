@@ -34,6 +34,7 @@ def main_devinette(joueur1: str, joueur2: str) -> None:
     réponse : str
     min : int
     max : int
+    mil : int
     nombre_tour : int
     jeu_en_cours : bool
     triche: bool
@@ -69,7 +70,8 @@ def main_devinette(joueur1: str, joueur2: str) -> None:
         # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
         # sinon le joueur joue
         if joueur2 == "robot":
-            proposition = randint(min, max)
+            mil = (min + max) // 2
+            proposition = randint(mil - 2, mil + 2)
             print(rouge_clair_re(joueur2) + ", propose " + str(proposition) + " !")
         else:
             # Proposition
