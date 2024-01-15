@@ -130,6 +130,10 @@ def main_morpion(joueur1: str, joueur2: str) -> None:
 
             choix = choice(case_dispo)
 
+            # Pour le premier tour du robot, il jouera forcément dans les coins
+            if nb_tour == 1 or nb_tour == 2:
+                choix = choice([0, 2, 6, 8])
+
             # Le robot regarde toute les possibilité de gagné ou de ne pas perdre
             # choix pour les colonnes  
             for colonne_index in range(0,3):
