@@ -54,6 +54,8 @@ def dérouler_tour(joueur: str, nb_tour: int, nb_allumettes: int) -> int:
     afficher_tour(nb_tour)
     afficher_allumettes(nb_allumettes)
 
+    print("Il reste ", nb_allumettes, "allumettes...")
+
     # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
     # sinon le joueur joue
     if joueur == "robot":
