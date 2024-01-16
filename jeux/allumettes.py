@@ -5,6 +5,7 @@ from utils.input import demanderEntier
 from utils.centrer import centrer
 from scores.entrée import EntréeScore
 from scores.fichier import écrireScore
+from utils.est_robot import est_robot
 from random import randint
 
 def afficher_allumettes(nb_allumettes : int) -> None:
@@ -58,7 +59,7 @@ def dérouler_tour(joueur: str, nb_tour: int, nb_allumettes: int) -> int:
 
     # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
     # sinon le joueur joue
-    if joueur == "robot":
+    if est_robot(joueur):
         if nb_allumettes > 8 :
             choix_allumettes = randint(1, 3)
         elif nb_allumettes > 5 :

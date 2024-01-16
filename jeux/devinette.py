@@ -5,6 +5,7 @@ from scores.fichier import écrireScore
 from utils.effacer_ecran import effacer_ecran
 from utils.couleurs import gris_foncé_re, jaune_re, rouge_clair_re
 from utils.titre import centrer_couleur, séparateur_avec_titre
+from utils.est_robot import est_robot
 from random import randint
 
 def calcul_points(nombre_tour : int) -> int:
@@ -53,7 +54,7 @@ def main_devinette(joueur1: str, joueur2: str) -> None:
 
     # On demande au joueur 1 de sélectionner le nombre mystère
     # que le joueur 2 devra trouver entre 1 et 100
-    if joueur1 == "robot":
+    if est_robot(joueur1):
         nombre_mystère = randint(1, 100)
     else:
         nombre_mystère = demanderEntier(jaune_re(joueur1) + ", choisissez le nombre mystère (entre 1 et 100) que " + joueur2 + " devra trouver : " + gris_foncé_re("(caché) "), True)
@@ -69,7 +70,7 @@ def main_devinette(joueur1: str, joueur2: str) -> None:
 
         # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
         # sinon le joueur joue
-        if joueur2 == "robot":
+        if est_robot(joueur2):
             mil = (min + max) // 2
             proposition = randint(mil - 2, mil + 2)
             print(rouge_clair_re(joueur2) + ", propose " + str(proposition) + " !")
@@ -82,7 +83,7 @@ def main_devinette(joueur1: str, joueur2: str) -> None:
         
         # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
         # sinon le joueur joue
-        if joueur1 == "robot":
+        if est_robot(joueur1):
             if proposition < nombre_mystère:
                 print(jaune_re(joueur1) + ", trop petit !")
                 réponse = "trop petit"

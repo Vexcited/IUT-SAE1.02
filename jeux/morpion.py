@@ -5,6 +5,7 @@ from utils.couleurs import gris_foncé_re, jaune_re, rouge_clair_re, couleur_jou
 from utils.titre import centrer_couleur, séparateur_avec_titre
 from scores.entrée import EntréeScore
 from scores.fichier import écrireScore
+from utils.est_robot import est_robot
 from random import choice
 
 def afficher_morpion(morpion : list[list[str]]) -> None:
@@ -125,7 +126,7 @@ def main_morpion(joueur1: str, joueur2: str) -> None:
 
         # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
         # sinon le joueur joue
-        if joueur_actuel == "robot" or joueur_actuel == "robot2":
+        if est_robot(joueur_actuel):
             choix_possible = []
 
             choix = choice(case_dispo)
