@@ -5,7 +5,7 @@ from utils.couleurs import gris_foncé_re, jaune_re, rouge_clair_re, couleur_jou
 from utils.titre import centrer_couleur, séparateur_avec_titre
 from scores.entrée import EntréeScore
 from scores.fichier import écrireScore
-from utils.est_robot import est_robot, format_si_nom_robot
+from utils.est_robot import est_robot
 from random import choice
 
 def afficher_morpion(morpion : list[list[str]]) -> None:
@@ -183,7 +183,7 @@ def main_morpion(joueur1: str, joueur2: str) -> None:
             else:
                 choix = choice(case_dispo)
 
-            print(couleur_joueur(format_si_nom_robot(joueur_actuel), joueur1, joueur2), ", a choisi la case", choix, "!")
+            print(couleur_joueur(joueur_actuel, joueur1, joueur2), ", a choisi la case", choix, "!")
         else:
             choix = demanderEntier(couleur_joueur(joueur_actuel, joueur1, joueur2) + ", veuillez choisir une case : ")
 
@@ -251,8 +251,8 @@ def main_morpion(joueur1: str, joueur2: str) -> None:
 
         # On affiche la fin de jeu.
         print(séparateur_avec_titre("FIN") + "\n")
-        print(centrer_couleur(couleur_joueur(format_si_nom_robot(joueur_actuel), joueur1, joueur2) + " a gagné en " + str(nb_tour) + " tours et remporte " + str(score.points) + " points !"))
-        print(centrer_couleur(couleur_joueur(format_si_nom_robot(adversaire_actuel), joueur1, joueur2) + " a perdu."))
+        print(centrer_couleur(couleur_joueur(joueur_actuel, joueur1, joueur2) + " a gagné en " + str(nb_tour) + " tours et remporte " + str(score.points) + " points !"))
+        print(centrer_couleur(couleur_joueur(adversaire_actuel, joueur1, joueur2) + " a perdu."))
     else:
         # On affiche la fin de jeu.
         print(séparateur_avec_titre("ÉGALITÉ") + "\n")

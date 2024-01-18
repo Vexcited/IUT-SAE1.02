@@ -1,3 +1,5 @@
+from utils.est_robot import format_si_nom_robot 
+
 # Pour ce fichier, nous nous sommes basés sur la table ANSI.
 # Nous avons utilisé le gist suivant : <https://gist.github.com/rene-d/9e584a7dd2935d0f461904b9f2950007#file-colors-py>
 
@@ -36,9 +38,11 @@ def couleur_joueur(joueur_actuel: str, joueur1: str, joueur2: str) -> str:
     actuel dans les jeux.
     """
 
-    if joueur1 == joueur_actuel:
+    joueur_actuel = format_si_nom_robot(joueur_actuel);
+
+    if format_si_nom_robot(joueur1) == joueur_actuel:
         return jaune_re(joueur_actuel)
-    elif joueur2 == joueur_actuel:
+    elif format_si_nom_robot(joueur2) == joueur_actuel:
         return rouge_clair_re(joueur_actuel)
     else:
         return joueur_actuel
