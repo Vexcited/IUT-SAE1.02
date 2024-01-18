@@ -5,6 +5,7 @@ from utils.effacer_ecran import effacer_ecran
 from utils.couleurs import réinitialisation_couleur, jaune, rouge_clair, couleur_joueur, gris_foncé_re
 from scores.entrée import EntréeScore
 from scores.fichier import écrireScore
+from utils.est_robot import est_robot
 from random import choice
 
 def calcul_points(nombre_tour : int) -> int:
