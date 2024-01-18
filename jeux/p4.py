@@ -86,7 +86,7 @@ def dérouler_tour(joueur_actuel: str, joueur1: str, jeu: list[list[str]], colon
 
     # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
     # sinon je joueur joue
-    if joueur_actuel == "robot":
+    if est_robot(joueur_actuel):
         choix = choice(colonne_restantes)
 
         print(réinitialisation_couleur(couleur + joueur_actuel), "a choisi la colonne", choix, "!")

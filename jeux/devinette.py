@@ -72,7 +72,12 @@ def main_devinette(joueur1: str, joueur2: str) -> None:
         # sinon le joueur joue
         if est_robot(joueur2):
             mil = (min + max) // 2
+            
             proposition = randint(mil - 2, mil + 2)
+
+            if proposition < min or proposition > max:
+                proposition = randint(min, max)
+
             print(rouge_clair_re(format_si_nom_robot(joueur2)) + ", propose " + str(proposition) + " !")
         else:
             # Proposition
