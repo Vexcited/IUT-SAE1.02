@@ -5,7 +5,7 @@ from utils.input import demanderEntier
 from utils.centrer import centrer
 from scores.entrée import EntréeScore
 from scores.fichier import écrireScore
-from utils.est_robot import est_robot
+from utils.est_robot import est_robot, format_si_nom_robot
 from random import randint
 
 def afficher_allumettes(nb_allumettes : int) -> None:
@@ -71,9 +71,9 @@ def dérouler_tour(joueur: str, nb_tour: int, nb_allumettes: int) -> int:
         else:
             choix_allumettes = 1
         
-        print(joueur, "prends", choix_allumettes, "allumettes !")
+        print(format_si_nom_robot(joueur), "prends", choix_allumettes, "allumettes !")
     else:
-        choix_allumettes = demanderEntier(joueur + " : Combien d'allumettes prenez-vous ? (1, 2 ou 3) : ")
+        choix_allumettes = demanderEntier(format_si_nom_robot(joueur) + " : Combien d'allumettes prenez-vous ? (1, 2 ou 3) : ")
 
     # Lorsque l'on prend les allumettes qui restent,
     # on perd la partie.
@@ -83,7 +83,7 @@ def dérouler_tour(joueur: str, nb_tour: int, nb_allumettes: int) -> int:
 
     # On vérifie que le joueur a bien entré un nombre d'allumettes valide.
     while choix_allumettes not in [1, 2, 3]:
-        choix_allumettes = demanderEntier(joueur + " : Le nombre d'allumettes à retirer du jeu doit être 1, 2 ou 3 ! : ")
+        choix_allumettes = demanderEntier(format_si_nom_robot(joueur) + " : Le nombre d'allumettes à retirer du jeu doit être 1, 2 ou 3 ! : ")
         
     input("Appuyez sur une touche pour continuer...")
     
@@ -145,8 +145,8 @@ def main_allumettes(joueur1: str, joueur2: str) -> None:
 
     # On affiche la fin de jeu.
     print("\n" + séparateur_avec_titre("FIN") + "\n")
-    print(centrer(adversaire_actuel + " a gagné en " + str(nb_tour) + " tours et remporte " + str(score.points) + " points !"))
-    print(centrer(joueur_actuel + " a perdu."))
+    print(centrer(format_si_nom_robot(adversaire_actuel) + " a gagné en " + str(nb_tour) + " tours et remporte " + str(score.points) + " points !"))
+    print(centrer(format_si_nom_robot(joueur_actuel) + " a perdu."))
 
     # Permet d'éviter de revenir directement au lanceur.
     input("\nAppuyez sur Entrée pour continuer...")

@@ -14,17 +14,28 @@ def définir_nom_joueur(index: int, étaitMêmeNom: bool = False) -> str:
     """
 
     nom_utilisateur: str
+    faire_robot: bool
+
     nom_utilisateur = ""
+    faire_robot = False
 
     # Tant que l'utilisateur n'a pas entré de nom d'utilisateur,
     # on redemande un nom d'utilisateur.
     while nom_utilisateur == "":
         effacer_ecran()
-        faire_titre("Nom d'utilisateur du Joueur : " + str(index))
+        faire_titre("Joueur : " + str(index))
 
-        if (étaitMêmeNom):
-            print("Pensez à ne pas utiliser le même nom d'utilisateur que le joueur 1 !")
+        faire_robot = input("Ce joueur est un robot ? (O/N) : ").upper() == "O"
 
-        nom_utilisateur = input("-> Joueur " + str(index) + " : ")
+        if (faire_robot):
+            if index == 1:
+                nom_utilisateur = "robot"
+            else:
+                nom_utilisateur = "robot2"
+        else:
+            if (étaitMêmeNom):
+                print("Pensez à ne pas utiliser le même nom d'utilisateur que le joueur 1 !")
+
+            nom_utilisateur = input("-> Joueur " + str(index) + " : ")
     
     return nom_utilisateur

@@ -5,7 +5,7 @@ from scores.fichier import écrireScore
 from utils.effacer_ecran import effacer_ecran
 from utils.couleurs import gris_foncé_re, jaune_re, rouge_clair_re
 from utils.titre import centrer_couleur, séparateur_avec_titre
-from utils.est_robot import est_robot
+from utils.est_robot import est_robot, format_si_nom_robot
 from random import randint
 
 def calcul_points(nombre_tour : int) -> int:
@@ -78,7 +78,7 @@ def main_devinette(joueur1: str, joueur2: str) -> None:
             if proposition < min or proposition > max:
                 proposition = randint(min, max)
 
-            print(rouge_clair_re(joueur2) + ", propose " + str(proposition) + " !")
+            print(rouge_clair_re(format_si_nom_robot(joueur2)) + ", propose " + str(proposition) + " !")
         else:
             # Proposition
             proposition = demanderEntier("\n" + rouge_clair_re(joueur2) + ", veuillez choisir un nombre entre " + str(min) + " et " + str(max) + " : ")
@@ -90,13 +90,13 @@ def main_devinette(joueur1: str, joueur2: str) -> None:
         # sinon le joueur joue
         if est_robot(joueur1):
             if proposition < nombre_mystère:
-                print(jaune_re(joueur1) + ", trop petit !")
+                print(jaune_re(format_si_nom_robot(joueur1)) + ", trop petit !")
                 réponse = "trop petit"
             elif proposition > nombre_mystère:
-                print(jaune_re(joueur1) + ", trop grand !")
+                print(jaune_re(format_si_nom_robot(joueur1)) + ", trop grand !")
                 réponse = "trop grand"
             else:
-                print(jaune_re(joueur1) + ", c'est gagné !")
+                print(jaune_re(format_si_nom_robot(joueur1)) + ", c'est gagné !")
                 réponse = "c'est gagné"
         else:
             while réponse != "trop petit" and réponse != "trop grand" and réponse != "c'est gagné":
@@ -130,18 +130,18 @@ def main_devinette(joueur1: str, joueur2: str) -> None:
 
     if not triche:
         # On remplie le score.
-        score.points    = calcul_points(nombre_tour)
+        score.points = calcul_points(nombre_tour)
         # On ajoute le score dans le fichier binaire.
         écrireScore(score)
 
         # On affiche la fin de jeu.
         print("\n" + séparateur_avec_titre("FIN") + "\n")
-        print(centrer_couleur(rouge_clair_re(joueur2) + " a gagné en " + str(nombre_tour) + " tour(s) et remporte " + str(score.points) + " points !"))
+        print(centrer_couleur(rouge_clair_re(format_si_nom_robot(joueur2)) + " a gagné en " + str(nombre_tour) + " tour(s) et remporte " + str(score.points) + " points !"))
     # S'il y a eu triche...
     else:
         # On affiche la fin de jeu.
         print("\n" + séparateur_avec_titre("TRICHE") + "\n")
-        print(rouge_clair_re(joueur2) + ", vous avez gagné mais aucun point ne vous est attribué.")
+        print(rouge_clair_re(format_si_nom_robot(joueur2)) + ", vous avez gagné mais aucun point ne vous est attribué.")
         print(centrer_couleur("Aucun point n'est attribué."))
 
     # Permet d'éviter de revenir directement au lanceur.

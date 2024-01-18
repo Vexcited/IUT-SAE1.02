@@ -1,5 +1,6 @@
 from typing import Union
 from scores.entrée import EntréeScore, EntréePointsUtilisateur
+from utils.est_robot import est_robot
 
 def pointsParUtilisateur(scores: list[EntréeScore]) -> list[EntréePointsUtilisateur]:
     """
@@ -18,29 +19,31 @@ def pointsParUtilisateur(scores: list[EntréeScore]) -> list[EntréePointsUtilis
     scores_utilisateurs = []
 
     for entrée in scores:
-        entrée_utilisateur = None
+        # On vérifie qu'on ne traite pas les scores des robots
+        if not est_robot(entrée.vainqueur):
+            entrée_utilisateur = None
 
-        # On cherche si l'utilisateur a déjà joué.
-        scores_utilisateurs_index = 0
-        # On fait attention à ne pas dépasser la taille de la liste.
-        while entrée_utilisateur is None and scores_utilisateurs_index < len(scores_utilisateurs):
-            if scores_utilisateurs[scores_utilisateurs_index].nom_utilisateur == entrée.vainqueur:
-                # On a trouvé une entrée et on la réutilise.
-                entrée_utilisateur = scores_utilisateurs[scores_utilisateurs_index]
-            else:
-                scores_utilisateurs_index += 1
+            # On cherche si l'utilisateur a déjà joué.
+            scores_utilisateurs_index = 0
+            # On fait attention à ne pas dépasser la taille de la liste.
+            while entrée_utilisateur is None and scores_utilisateurs_index < len(scores_utilisateurs):
+                if scores_utilisateurs[scores_utilisateurs_index].nom_utilisateur == entrée.vainqueur:
+                    # On a trouvé une entrée et on la réutilise.
+                    entrée_utilisateur = scores_utilisateurs[scores_utilisateurs_index]
+                else:
+                    scores_utilisateurs_index += 1
 
-        # Si l'utilisateur n'a pas encore joué, on crée une entrée pour lui.
-        if entrée_utilisateur is None:
-            entrée_utilisateur = EntréePointsUtilisateur()
-            entrée_utilisateur.nom_utilisateur = entrée.vainqueur
-            entrée_utilisateur.points = 0
-            entrée_utilisateur.nombre_parties = 0
-            scores_utilisateurs.append(entrée_utilisateur)
+            # Si l'utilisateur n'a pas encore joué, on crée une entrée pour lui.
+            if entrée_utilisateur is None:
+                entrée_utilisateur = EntréePointsUtilisateur()
+                entrée_utilisateur.nom_utilisateur = entrée.vainqueur
+                entrée_utilisateur.points = 0
+                entrée_utilisateur.nombre_parties = 0
+                scores_utilisateurs.append(entrée_utilisateur)
 
-        # On met à jour les points de l'utilisateur.
-        entrée_utilisateur.points += entrée.points
-        entrée_utilisateur.nombre_parties += 1
+            # On met à jour les points de l'utilisateur.
+            entrée_utilisateur.points += entrée.points
+            entrée_utilisateur.nombre_parties += 1
 
     return scores_utilisateurs
 
