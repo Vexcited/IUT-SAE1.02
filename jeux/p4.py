@@ -5,7 +5,7 @@ from utils.effacer_ecran import effacer_ecran
 from utils.couleurs import réinitialisation_couleur, jaune, rouge_clair, couleur_joueur, gris_foncé_re
 from scores.entrée import EntréeScore
 from scores.fichier import écrireScore
-from utils.est_robot import est_robot
+from utils.est_robot import format_si_nom_robot
 from random import choice
 
 def calcul_points(nombre_tour : int) -> int:
@@ -211,7 +211,7 @@ def main_p4(joueur1: str, joueur2: str) -> None:
 
         # On affiche la fin de jeu.
         print(séparateur_avec_titre("FIN") + "\n")
-        print(centrer_couleur(couleur_joueur(joueur_actuel, joueur1, joueur2) + " a gagné en " + str(nb_tour) + " tours et remporte " + str(score.points) + " points !"))
+        print(centrer_couleur(couleur_joueur(format_si_nom_robot(joueur_actuel), joueur1, joueur2) + " a gagné en " + str(nb_tour) + " tours et remporte " + str(score.points) + " points !"))
     # S'il y a égalité...
     elif tour_résultat == 2:
         # On affiche la fin de jeu.
