@@ -60,7 +60,7 @@ def afficher_p4(jeu: list[list[str]], colonne_restantes: list[int]) -> None:
     print(centrer_couleur(ligne_col_restantes))
     print("") # Saut de ligne après la grille.
 
-def dérouler_tour(joueur_actuel: str, joueur1: str, jeu: list[list[str]], colonne_restantes: list[int]) -> int:
+def dérouler_tour(joueur_actuel: str, joueur1: str, jeu: list[list[str]], colonne_restantes: list[int], difficulté_robot1: str, difficulté_robot2: str) -> int:
     """
     Fonction qui déroule le tour de Puissance 4.
 
@@ -141,7 +141,7 @@ def dérouler_tour(joueur_actuel: str, joueur1: str, jeu: list[list[str]], colon
     # Personne a gagné, on continue la partie.
     return 0
 
-def main_p4(joueur1: str, joueur2: str) -> None:
+def main_p4(joueur1: str, joueur2: str, difficulté_robot1: str, difficulté_robot2: str) -> None:
     """
     Procédure qui sert de point d'entrée pour le lanceur.
     C'est la procédure principale du jeu Puissance 4.
@@ -153,6 +153,8 @@ def main_p4(joueur1: str, joueur2: str) -> None:
 
     - `joueur1`, une chaîne, qui représente le nom d'utilisateur du joueur 1.
     - `joueur2`, une chaîne, qui représente le nom d'utilisateur du joueur 2.
+    - `difficulté_robot1`, une chaîne, qui représente la difficulté du robot 1.
+    - `difficulté_robot2`, une chaîne, qui représente la difficulté du robot 2.
     """
     
     colonne_restantes : list[int]
@@ -193,7 +195,7 @@ def main_p4(joueur1: str, joueur2: str) -> None:
             joueur_actuel     = joueur2
             adversaire_actuel = joueur1
 
-        tour_résultat = dérouler_tour(joueur_actuel, joueur1, jeu, colonne_restantes)
+        tour_résultat = dérouler_tour(joueur_actuel, joueur1, jeu, colonne_restantes, difficulté_robot1, difficulté_robot2)
         nb_tour += 1
 
     effacer_ecran()

@@ -19,3 +19,15 @@ def format_si_nom_robot(joueur: str) -> str:
             return "Robot 1"
         else:
             return "Robot 2"
+        
+def difficulté_robot():
+    """
+    Fonction qui permet de choisir la difficulté du robot.
+        entrée : rien
+        sortie : la difficulté du robot (1 = facile, 2 = moyen)
+    """
+    print("\nVeuillez choisir la difficulté du robot :\n")
+    print("\t1 | Facile")
+    print("\t2 | Moyen")
+
+    return input("\n-> Sélection(1,2) : ").strip()

@@ -19,7 +19,7 @@ def calcul_points(nombre_tour : int) -> int:
     return points
 
 
-def main_devinette(joueur1: str, joueur2: str) -> None:
+def main_devinette(joueur1: str, joueur2: str, difficulté_robot1: str, difficulté_robot2: str) -> None:
     """
     Procédure qui sert de point d'entrée pour le lanceur.
     C'est la procédure principale du jeu devinette.
@@ -28,6 +28,8 @@ def main_devinette(joueur1: str, joueur2: str) -> None:
 
     - `joueur1`, une chaîne, qui représente le nom d'utilisateur du joueur 1.
     - `joueur2`, une chaîne, qui représente le nom d'utilisateur du joueur 2.
+    - `difficulté_robot1`, une chaîne, qui représente la difficulté du robot 1.
+    - `difficulté_robot2`, une chaîne, qui représente la difficulté du robot 2.
     """
 
     nombre_mystère : int
@@ -55,7 +57,11 @@ def main_devinette(joueur1: str, joueur2: str) -> None:
     # On demande au joueur 1 de sélectionner le nombre mystère
     # que le joueur 2 devra trouver entre 1 et 100
     if est_robot(joueur1):
-        nombre_mystère = randint(1, 100)
+        if difficulté_robot1 == "1":
+            nombre_mystère = randint(1, 100)
+        else:
+            nombre_mystère = randint(1, 200)
+            max = 200
     else:
         nombre_mystère = demanderEntier(jaune_re(joueur1) + ", choisissez le nombre mystère (entre 1 et 100) que " + joueur2 + " devra trouver : " + gris_foncé_re("(caché) "), True)
 
@@ -71,12 +77,16 @@ def main_devinette(joueur1: str, joueur2: str) -> None:
         # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
         # sinon le joueur joue
         if est_robot(joueur2):
-            mil = (min + max) // 2
-            
-            proposition = randint(mil - 2, mil + 2)
-
-            if proposition < min or proposition > max:
+            if difficulté_robot2 == "1":
                 proposition = randint(min, max)
+
+            else:
+                mil = (min + max) // 2
+                
+                proposition = randint(mil - 2, mil + 2)
+
+                if proposition < min or proposition > max:
+                    proposition = randint(min, max)
 
             print(rouge_clair_re(format_si_nom_robot(joueur2)) + ", propose " + str(proposition) + " !")
         else:

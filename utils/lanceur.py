@@ -4,6 +4,8 @@ from scores.entrée import EntréeScore, EntréePointsUtilisateur
 from scores.points import pointsParUtilisateur, trierPoints
 from utils.effacer_ecran import effacer_ecran
 from utils.titre import faire_titre, centrer_avec_bordures, séparateur_avec_bordures_vers_haut, centrer_couleur_avec_bordures
+from utils.est_robot import est_robot
+from utils.est_robot import difficulté_robot
 
 from jeux.devinette import main_devinette
 from jeux.allumettes import main_allumettes
@@ -26,6 +28,8 @@ def préJeu(type_jeu: str) -> None:
     premier_lancement: bool
     rejouer: bool
     sélection: str
+    difficulté_robot1: str
+    difficulté_robot2: str
     nom_joueur_1: str
     nom_joueur_2: str
     scores: list[EntréeScore]
@@ -84,11 +88,20 @@ def préJeu(type_jeu: str) -> None:
             if sélection != "1" and sélection != "0":
                 print("Sélection invalide !")
 
+        difficulté_robot1 = ""
+        difficulté_robot2 = ""
         # Si l'utilisateur veut jouer, on lance le jeu.
         if sélection == "1":
             # On demande le nom d'utilisateur de chaque joueur.
             nom_joueur_1 = définir_nom_joueur(1)
+
+            if est_robot(nom_joueur_1):
+                difficulté_robot1 = difficulté_robot()
+
             nom_joueur_2 = définir_nom_joueur(2)
+
+            if est_robot(nom_joueur_2):
+                difficulté_robot2 = difficulté_robot()
             
             # Le joueur 2 ne doit pas avoir le même nom que le joueur 1.
             while (nom_joueur_2 == nom_joueur_1):
@@ -97,13 +110,13 @@ def préJeu(type_jeu: str) -> None:
             # On lance le jeu.
             effacer_ecran()
             if type_jeu == "devinette":
-                main_devinette(nom_joueur_1, nom_joueur_2)
+                main_devinette(nom_joueur_1, nom_joueur_2, difficulté_robot1, difficulté_robot2)
             elif type_jeu == "allumettes":
-                main_allumettes(nom_joueur_1, nom_joueur_2)
+                main_allumettes(nom_joueur_1, nom_joueur_2, difficulté_robot1, difficulté_robot2)
             elif type_jeu == "morpion":
-                main_morpion(nom_joueur_1, nom_joueur_2)
+                main_morpion(nom_joueur_1, nom_joueur_2, difficulté_robot1, difficulté_robot2)
             elif type_jeu == "puissance_4":
-                main_p4(nom_joueur_1, nom_joueur_2)
+                main_p4(nom_joueur_1, nom_joueur_2, difficulté_robot1, difficulté_robot2)
 
             # Une fois que le jeu a été joué,
             # on dit qu'il a déjà été lancé au moins une fois.

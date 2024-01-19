@@ -27,7 +27,7 @@ def afficher_allumettes(nb_allumettes : int) -> None:
     print("") # Saut de ligne
 
 
-def dérouler_tour(joueur: str, nb_tour: int, nb_allumettes: int) -> int:
+def dérouler_tour(joueur: str, nb_tour: int, nb_allumettes: int, difficulté: str) -> int:
     """
     Fonction qui déroule le tour d'un joueur.
     1. On affiche le tour
@@ -41,6 +41,7 @@ def dérouler_tour(joueur: str, nb_tour: int, nb_allumettes: int) -> int:
     - nb_tour, un entier, qui représente le nombre de tours actuel.
                 On commence la partie au "Tour 1", donc `nb_tour` sera 1.
     - nb_allumettes, un entier: le nombre d'allumettes encore en jeu
+    - `difficulté`, une chaîne, qui représente la difficulté du robot.
     
     ## Sortie :
 
@@ -60,16 +61,23 @@ def dérouler_tour(joueur: str, nb_tour: int, nb_allumettes: int) -> int:
     # Si c'est un robot qui joue, un algorithme est donc lancé pour effectuer le tour du robot
     # sinon le joueur joue
     if est_robot(joueur):
-        if nb_allumettes > 8 :
-            choix_allumettes = randint(1, 3)
-        elif nb_allumettes > 5 :
-            choix_allumettes = nb_allumettes - 5
-        elif nb_allumettes > 4 :
-            choix_allumettes = randint(1, 3)
-        elif nb_allumettes > 1 :
-            choix_allumettes = nb_allumettes - 1
+        if difficulté == "1":
+            # Pour être sur que le robot ne choississe pas un nombre illégal d'allumettes
+            if 5 > nb_allumettes and nb_allumettes > 1:
+                choix_allumettes = nb_allumettes - 1
+            else:
+                choix_allumettes = randint(1, 3)
         else:
-            choix_allumettes = 1
+            if nb_allumettes > 8 :
+                choix_allumettes = randint(1, 3)
+            elif nb_allumettes > 5 :
+                choix_allumettes = nb_allumettes - 5
+            elif nb_allumettes > 4 :
+                choix_allumettes = randint(1, 3)
+            elif nb_allumettes > 1 :
+                choix_allumettes = nb_allumettes - 1
+            else:
+                choix_allumettes = 1
         
         print(format_si_nom_robot(joueur), "prends", choix_allumettes, "allumettes !")
     else:
@@ -90,7 +98,7 @@ def dérouler_tour(joueur: str, nb_tour: int, nb_allumettes: int) -> int:
     # On retourne le nombre d'allumettes restantes.
     return nb_allumettes - choix_allumettes
 
-def main_allumettes(joueur1: str, joueur2: str) -> None:
+def main_allumettes(joueur1: str, joueur2: str, difficulté_robot1: str, difficulté_robot2: str) -> None:
     """
     Procédure qui sert de point d'entrée pour le lanceur.
     C'est la procédure principale du jeu d'allumettes.
@@ -102,11 +110,14 @@ def main_allumettes(joueur1: str, joueur2: str) -> None:
 
     - `joueur1`, une chaîne, qui représente le nom d'utilisateur du joueur 1.
     - `joueur2`, une chaîne, qui représente le nom d'utilisateur du joueur 2.
+    - `difficulté_robot1`, une chaîne, qui représente la difficulté du robot 1.
+    - `difficulté_robot2`, une chaîne, qui représente la difficulté du robot 2.
     """
 
     nb_tour           : int
     nb_allumettes     : int
     joueur_actuel     : str
+    difficulté_actuel : str
     adversaire_actuel : str
     score             : EntréeScore
 
@@ -129,12 +140,14 @@ def main_allumettes(joueur1: str, joueur2: str) -> None:
         if nb_tour % 2 == 1:
             joueur_actuel     = joueur1
             adversaire_actuel = joueur2
+            difficulté_actuel = difficulté_robot1
         else:
             joueur_actuel     = joueur2
             adversaire_actuel = joueur1
+            difficulté_actuel = difficulté_robot2
         
         # On lui demande de jouer.
-        nb_allumettes = dérouler_tour(joueur_actuel, nb_tour, nb_allumettes)
+        nb_allumettes = dérouler_tour(joueur_actuel, nb_tour, nb_allumettes, difficulté_actuel)
 
     # On remplie le score.
     score.vainqueur = adversaire_actuel
