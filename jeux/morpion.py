@@ -197,7 +197,7 @@ def main_morpion(joueur1: str, joueur2: str, difficult√©_robot1: str, difficult√
             choix = demanderEntier(couleur_joueur(joueur_actuel, joueur1, joueur2) + ", veuillez choisir une case : ")
 
         # Si la case choisie n'est pas bonne, on redemande.
-        while choix < 0 or choix > 8 estRemplie(morpion[choix // 3][choix % 3]):
+        while choix < 0 or choix > 8 or estRemplie(morpion[choix // 3][choix % 3]):
             choix = demanderEntier(couleur_joueur(joueur_actuel, joueur1, joueur2) + ", veuillez choisir une case valide : ")
 
         case_dispo.remove(int(morpion[choix // 3][choix % 3]))
