@@ -26,8 +26,15 @@ def difficulté_robot():
         entrée : rien
         sortie : la difficulté du robot (1 = facile, 2 = moyen)
     """
+    choix : str
+
     print("\nVeuillez choisir la difficulté du robot :\n")
     print("\t1 | Facile")
     print("\t2 | Moyen")
 
-    return input("\n-> Sélection(1,2) : ").strip()
+    choix = input("\n-> Sélection(1,2) : ").strip()
+
+    while choix != "1" and choix != "2":
+        choix = input("\n-> Choisissez 1 ou 2 ! : ").strip()
+
+    return choix
